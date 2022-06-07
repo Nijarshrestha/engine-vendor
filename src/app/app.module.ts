@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { VehicleController } from '../vehicle/vehicle.controller';
-import { CarController } from '../car/car.controller';
+import { CarModule } from 'src/car/car.module';
+import { VehicleModule } from 'src/vehicle/vehicle.module';
 
 @Module({
-  imports: [],
-  controllers: [VehicleController, CarController],
+  imports: [CarModule, VehicleModule],
 })
 // eslint-disable-next-line prettier/prettier
 export class AppModule { }

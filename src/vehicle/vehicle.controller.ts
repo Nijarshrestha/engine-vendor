@@ -1,25 +1,29 @@
-import { Controller, Get, Post, Put } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
+import { CreateVehicleDto, FindVehicleResponseDto, UpdateVehicleDto } from './dto/vehicle.dto';
+import { VehicleService } from './vehicle.service';
 
 @Controller('vehicles')
 export class VehicleController {
+    constructor(private readonly vehicleService: VehicleService) { }
     @Get()
-    getVehicles() {
-        return 'All Vehicles';
+    getVehicles(): FindVehicleResponseDto[] {
+        return this.vehicleService.getVehicles();
     }
 
     @Get('/:vehicleId')
-    getVehicleTypeById() {
-        return "Get Vehicle type By Id"
+    getVehicleTypeById(@Param('vehicleId', new ParseUUIDPipe()) vehicleId: string): FindVehicleResponseDto {
+        return this.vehicleService.getVehicleById(vehicleId)
     }
 
     @Post()
-    createVehicleType() {
-        return "Create Vehicle Type "
+    createVehicleType(@Body() body: CreateVehicleDto) {
+        return this.vehicleService.createVehicle(body)
     }
 
-    @Put()
-    updateVehicleType() {
-        return "Update Vehicle Type by Id"
+    @Put(':vehicleId')
+    updateVehicleType(@Param('vehicleId', new ParseUUIDPipe()) vehicleId: string, @Body() body: UpdateVehicleDto) {
+        return this.vehicleService.updateVehicle(body, vehicleId)
     }
 }
 
